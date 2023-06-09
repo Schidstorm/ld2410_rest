@@ -14,31 +14,6 @@ private:
     TWriter *m_writer;
     Ld2410State *m_state;
 
-    const std::vector<rest_service_t> m_services = {
-        { MethodOptions, "/", [](AsyncWebServerRequest* req, JsonDocument* res){
-            res->to<JsonObject>();
-
-            return RestServiceResult(200);
-        }},
-        { MethodGet, "/state", [](AsyncWebServerRequest* req, JsonDocument* res){
-            auto o = res->to<JsonObject>();
-            to_json(o, m_state->get_detection());
-
-            return RestServiceResult(200);
-        }},
-        command_to_route<ld2410::EnableConfigurationCommand>("/EnableConfigurationCommand"),
-        command_to_route<ld2410::EndConfigurationCommand>("/EndConfigurationCommand"),
-        command_to_route<ld2410::MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>("/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand"),
-        command_to_route<ld2410::ReadParameterCommand>("/ReadParameterCommand"),
-        command_to_route<ld2410::EnableEngineeringModeCommand>("/EnableEngineeringModeCommand"),
-        command_to_route<ld2410::CloseEngineeringModeCommand>("/CloseEngineeringModeCommand"),
-        command_to_route<ld2410::RangeSensitivityConfigurationCommand>("/RangeSensitivityConfigurationCommand"),
-        command_to_route<ld2410::ReadFirmwareVersionCommand>("/ReadFirmwareVersionCommand"),
-        command_to_route<ld2410::SetSerialPortBaudRate>("/SetSerialPortBaudRate"),
-        command_to_route<ld2410::FactoryReset>("/FactoryReset"),
-        command_to_route<ld2410::RestartModule>("/RestartModule"),
-    };
-
 public:
     Ld2410Webserver(): m_server() {
 
@@ -69,7 +44,30 @@ public:
         this->m_writer = writer;
         this->m_state = state;
 
-        m_server.begin(async_web_server, m_services);
+        m_server.begin(async_web_server, {
+            { MethodOptions, "/", [](AsyncWebServerRequest* req, JsonDocument* res){
+                res->to<JsonObject>();
+
+                return RestServiceResult(200);
+            }},
+            { MethodGet, "/state", [](AsyncWebServerRequest* req, JsonDocument* res){
+                auto o = res->to<JsonObject>();
+                to_json(o, m_state->get_detection());
+
+                return RestServiceResult(200);
+            }},
+            command_to_route<ld2410::EnableConfigurationCommand>("/EnableConfigurationCommand"),
+            command_to_route<ld2410::EndConfigurationCommand>("/EndConfigurationCommand"),
+            command_to_route<ld2410::MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>("/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand"),
+            command_to_route<ld2410::ReadParameterCommand>("/ReadParameterCommand"),
+            command_to_route<ld2410::EnableEngineeringModeCommand>("/EnableEngineeringModeCommand"),
+            command_to_route<ld2410::CloseEngineeringModeCommand>("/CloseEngineeringModeCommand"),
+            command_to_route<ld2410::RangeSensitivityConfigurationCommand>("/RangeSensitivityConfigurationCommand"),
+            command_to_route<ld2410::ReadFirmwareVersionCommand>("/ReadFirmwareVersionCommand"),
+            command_to_route<ld2410::SetSerialPortBaudRate>("/SetSerialPortBaudRate"),
+            command_to_route<ld2410::FactoryReset>("/FactoryReset"),
+            command_to_route<ld2410::RestartModule>("/RestartModule"),
+        });
     }
 };
 

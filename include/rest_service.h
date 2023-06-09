@@ -13,11 +13,11 @@ namespace ld2410_rest {
 
 class RestMethod {
 private:
-  std::string m_name;
+  const char* m_name;
   WebRequestMethod m_i_method;
 
 public:
-  RestMethod(std::string name, WebRequestMethod i_method): m_name(name), m_i_method(i_method) {
+  RestMethod(const char* name, WebRequestMethod i_method): m_name(name), m_i_method(i_method) {
 
   }
 
@@ -82,7 +82,7 @@ using rest_service_handler_t = std::function<rest_service_result_t(AsyncWebServe
 
 struct RestServiceTrigger {
     RestMethod method;
-    std::string path;
+    const char* path;
     rest_service_handler_t handler;  
 };
 

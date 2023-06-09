@@ -3,28 +3,28 @@
 using namespace ld2410_rest;
 
 
-void WifiWebServer::begin(AsyncWebServer* server, const std::vector<rest_service_t> &services) {
+void WifiWebServer::begin(AsyncWebServer* server, const std::vector<rest_service_t> services) {
 
   for(auto &srv: services) {
     Serial.print("registering rest service for ");
-    Serial.print(srv.method.name().c_str());
+    Serial.print(srv.method.name());
     Serial.print(" ");
-    Serial.println(srv.path.c_str());
+    Serial.println(srv.path);
 
     AsyncCallbackWebHandler* optionsHandler = new AsyncCallbackWebHandler();
-    optionsHandler->setUri(srv.path.c_str());
+    optionsHandler->setUri(srv.path);
     optionsHandler->setMethod(MethodOptions.internal_method());
     optionsHandler->onRequest([&](AsyncWebServerRequest *request){
       auto response = request->beginResponse(204, "application/json", "");
       response->addHeader("Access-Control-Allow-Origin", "*");
-      response->addHeader("Access-Control-Allow-Methods", srv.method.name().c_str());
+      response->addHeader("Access-Control-Allow-Methods", srv.method.name());
       response->addHeader("Access-Control-Allow-Headers", "content-type");
       request->send(response);
     });
     server->addHandler(optionsHandler);
 
     AsyncCallbackWebHandler* handler = new AsyncCallbackWebHandler();
-    handler->setUri(srv.path.c_str());
+    handler->setUri(srv.path);
     handler->setMethod(srv.method.internal_method());
     handler->onBody([&](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total) {
         if (m_upload_body_buffer.size() == 0) {
@@ -55,7 +55,7 @@ void WifiWebServer::begin(AsyncWebServer* server, const std::vector<rest_service
         ArduinoJson::serializeJson(m_json_doc, result_buffer.data(), result_buffer.size());
         auto response = request->beginResponse_P(result.status(), "application/json", result_buffer.data(), result_buffer.size());
         response->addHeader("Access-Control-Allow-Origin", "*");
-        response->addHeader("Access-Control-Allow-Methods", srv.method.name().c_str());
+        response->addHeader("Access-Control-Allow-Methods", srv.method.name());
         response->addHeader("Access-Control-Allow-Headers", "content-type");
         request->send(response);
       } else {
@@ -69,7 +69,7 @@ void WifiWebServer::begin(AsyncWebServer* server, const std::vector<rest_service
         ArduinoJson::serializeJson(json, result_buffer.data(), result_buffer.size());
         auto response = request->beginResponse(err.status(), "application/json", result_buffer.c_str());
         response->addHeader("Access-Control-Allow-Origin", "*");
-        response->addHeader("Access-Control-Allow-Methods", srv.method.name().c_str());
+        response->addHeader("Access-Control-Allow-Methods", srv.method.name());
         response->addHeader("Access-Control-Allow-Headers", "content-type");
         request->send(response);
       }
