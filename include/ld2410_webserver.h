@@ -22,7 +22,7 @@ public:
     
 
     template <typename T>
-    constexpr rest_service_t command_to_route(std::string route) {
+    constexpr rest_service_t command_to_route(const char* route) {
     return { MethodPut, route, [=](AsyncWebServerRequest* req, JsonDocument* res){
         auto o = res->as<JsonObject>();
         auto command = from_json<T>(o);
