@@ -81,7 +81,7 @@ using rest_service_handler_t = std::function<rest_service_result_t(AsyncWebServe
 
 struct RestServiceTrigger {
     RestMethod method;
-    const char* path;
+    String path;
     rest_service_handler_t handler;  
 };
 
