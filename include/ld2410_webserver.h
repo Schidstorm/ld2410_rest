@@ -23,7 +23,7 @@ public:
         auto o = res->as<JsonObject>();
         auto command = from_json<T>(o);
         o.clear();
-        auto ack = ld2410::write_and_read_ack(writer, reader, command, 500);
+        auto ack = ld2410::write_and_read_ack(*writer, *reader, command, 500);
         if (!ack) {
             o["error"] = "no ack packet";
         } else {
