@@ -38,7 +38,6 @@ public:
     }};
     }
 
-    template <typename TReader, typename TWriter>
     void begin(AsyncWebServer* async_web_server, Ld2410State *state, TReader *reader, TWriter *writer) {
         this->m_reader = reader;
         this->m_writer = writer;
