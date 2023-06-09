@@ -64,9 +64,9 @@ void WifiWebServer::begin(AsyncWebServer* server, const std::vector<rest_service
         jsonObj["error"] = err.message();
         auto json = DynamicJsonDocument(jsonObj);
         auto json_size = ArduinoJson::measureJson(json);
-        std::string result_buffer;
-        result_buffer.resize(json_size);
-        ArduinoJson::serializeJson(json, result_buffer.data(), result_buffer.size());
+        String result_buffer;
+        result_buffer.reserve(json_size);
+        ArduinoJson::serializeJson(json, result_buffer.begin(), result_buffer.length());
         auto response = request->beginResponse(err.status(), "application/json", result_buffer.c_str());
         response->addHeader("Access-Control-Allow-Origin", "*");
         response->addHeader("Access-Control-Allow-Methods", srv.method.name());

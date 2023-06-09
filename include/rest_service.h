@@ -2,7 +2,6 @@
 
 #include <functional>
 #include <variant>
-#include <string>
 #include <tuple>
 #include <optional>
 
@@ -33,7 +32,7 @@ public:
 class RestServiceError {
 private:
     uint16_t m_status;
-    std::string m_message;
+    String m_message;
 
 public:
     RestServiceError(decltype(m_status) status, decltype(m_message) message): m_status(status), m_message(message) {
