@@ -34,6 +34,14 @@ public:
         m_is_detected = is_detected;
     }
 
+    void is_detected(bool is_detected) {
+        m_is_detected = is_detected;
+    }
+
+    bool is_detected() const {
+        return m_is_detected;
+    }
+
     void to_json(JsonDocument &doc) const {
         auto result = doc.to<JsonObject>();
 

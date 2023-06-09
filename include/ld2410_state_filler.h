@@ -27,7 +27,7 @@ public:
     }
 
     void loop() {
-        m_state->set_is_detected(digitalRead(m_detection_pin) == 0);
+        m_state->set_is_detected(digitalRead(m_detection_pin) < 500);
 
         auto packet = ld2410::read_from_reader<ld2410::ReportingDataFrame, ld2410::EngineeringModeDataFrame>(*m_reader);
         if (packet.has_value()) {
