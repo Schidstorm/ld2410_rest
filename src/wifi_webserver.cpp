@@ -3,7 +3,7 @@
 using namespace ld2410_rest;
 
 
-void WifiWebServer::begin(AsyncWebServer* server, const std::vector<rest_service_t> services) {
+void WifiWebServer::begin(AsyncWebServer* server, const std::vector<rest_service_t> &services) {
 
   for(auto &srv: services) {
     Serial.print("registering rest service for ");
