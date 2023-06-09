@@ -49,7 +49,7 @@ public:
 
                 return RestServiceResult(200);
             }},
-            { MethodGet, "/state", [](AsyncWebServerRequest* req, JsonDocument* res){
+            { MethodGet, "/state", [=](AsyncWebServerRequest* req, JsonDocument* res){
                 auto o = res->to<JsonObject>();
                 to_json(o, m_state->get_detection());
 
