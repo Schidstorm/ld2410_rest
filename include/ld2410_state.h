@@ -9,6 +9,8 @@
 
 #include <ArduinoJson.h>
 
+namespace ld2410_rest {
+
 class Ld2410State {
 private:
     std::optional<std::variant<ld2410::ReportingDataFrame, ld2410::EngineeringModeDataFrame>> m_detection;
@@ -68,3 +70,5 @@ public:
         result["detected"] = m_is_detected;
     }
 };
+
+}

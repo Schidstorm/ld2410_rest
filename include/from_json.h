@@ -4,6 +4,7 @@
 #include <ArduinoJson.h>
 #include <ld2410.h>
 
+namespace ld2410_rest {
 
 template<typename T>
 T from_json(JsonObject &o);
@@ -91,3 +92,4 @@ ld2410::RestartModule from_json(JsonObject &o) {
     return r;
 }
 
+}

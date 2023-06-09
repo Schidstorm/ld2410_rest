@@ -5,6 +5,8 @@
 
 #include <Arduino.h>
 
+namespace ld2410_rest {
+
 class Ld2410StateFiller {
 private:
     ld2410::StreamReader<64>* m_reader;
@@ -35,3 +37,5 @@ public:
     }
 
 };
+
+}

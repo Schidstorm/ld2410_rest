@@ -9,6 +9,8 @@
 #include <ArduinoJson.h>
 #include <ESPAsyncWebServer.h>
 
+namespace ld2410_rest {
+
 class RestMethod {
 private:
   std::string m_name;
@@ -85,3 +87,5 @@ struct RestServiceTrigger {
 };
 
 using rest_service_t = RestServiceTrigger;
+
+}

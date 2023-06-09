@@ -1,6 +1,6 @@
 #include "wifi_webserver.h"
 
-
+using namespace ld2410_rest;
 
 
 void WifiWebServer::begin(AsyncWebServer* server, const std::vector<rest_service_t> services) {

@@ -19,6 +19,7 @@
 #include "rest_service.h"
 
 
+namespace ld2410_rest {
 
 class WifiWebServer {
 private:
@@ -37,3 +38,5 @@ public:
     return &m_json_doc;
   }
 };
+
+}

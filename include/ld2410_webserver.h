@@ -4,6 +4,8 @@
 #include "from_json.h"
 #include "to_json.h"
 
+namespace ld2410_rest {
+
 class Ld2410Webserver {
 private:
     WifiWebServer m_server;
@@ -60,3 +62,5 @@ public:
         });
     }
 };
+
+}

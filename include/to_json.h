@@ -4,6 +4,7 @@
 #include <ArduinoJson.h>
 #include <ld2410.h>
 
+namespace ld2410_rest {
 
 template<typename T>
 void to_json(JsonObject &o, const T &d);
@@ -131,4 +132,6 @@ void to_json(JsonObject &o, const ld2410::EngineeringModeDataFrame &d) {
     for(auto v: d.static_distance_gate_energy_value()) {
         static_distance_gate_energy_value.add(v);
     }
+}
+
 }

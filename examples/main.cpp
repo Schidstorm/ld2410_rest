@@ -5,6 +5,8 @@
 #include "ld2410_state_filler.h"
 #include "ld2410_webserver.h"
 
+using namespace ld2410_rest;
+
 std::shared_ptr<Ld2410State> state = std::make_shared<Ld2410State>();
 ld2410::StreamReader r{};
 ld2410::StreamWriter w{};
