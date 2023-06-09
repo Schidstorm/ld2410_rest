@@ -18,8 +18,8 @@ public:
     
 
     template <typename T, typename TReader, typename TWriter>
-    constexpr rest_service_t command_to_route(std::string route, TReader &reader, TWriter &writer) {
-    return { MethodPut, route, [&](AsyncWebServerRequest* req, JsonDocument* res){
+    constexpr rest_service_t command_to_route(std::string route, TReader *reader, TWriter *writer) {
+    return { MethodPut, route, [=](AsyncWebServerRequest* req, JsonDocument* res){
         auto o = res->as<JsonObject>();
         auto command = from_json<T>(o);
         o.clear();
@@ -35,14 +35,14 @@ public:
     }
 
     template <typename TReader, typename TWriter>
-    void begin(AsyncWebServer* async_web_server, Ld2410State *state, TReader &reader, TWriter &writer) {
+    void begin(AsyncWebServer* async_web_server, Ld2410State *state, TReader *reader, TWriter *writer) {
         m_server.begin(async_web_server, {
             { MethodOptions, "/", [](AsyncWebServerRequest* req, JsonDocument* res){
                 res->to<JsonObject>();
 
                 return RestServiceResult(200);
             }},
-            { MethodGet, "/state", [&](AsyncWebServerRequest* req, JsonDocument* res){
+            { MethodGet, "/state", [=](AsyncWebServerRequest* req, JsonDocument* res){
                 auto o = res->to<JsonObject>();
                 to_json(o, state->get_detection());
 
