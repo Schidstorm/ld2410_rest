@@ -1,5 +1,5 @@
 #pragma once
-#include "wifi_webserver.h"
+#include "simple_webserver.h"
 #include "ld2410_state_filler.h"
 #include "from_json.h"
 #include "to_json.h"
@@ -9,21 +9,56 @@ namespace ld2410_rest {
 template <typename TReader, typename TWriter>
 class Ld2410Webserver {
 private:
-    WifiWebServer m_server;
+    SimpleWebserver m_server;
     TReader *m_reader;
     TWriter *m_writer;
     Ld2410State *m_state;
 
 public:
-    Ld2410Webserver(): m_server() {
+    Ld2410Webserver(): m_server(80) {
 
     }
 
-    
+    void on_request(WiFiClient* client, const String &method, const String &url, DynamicJsonDocument &doc) {
+        if (method ==  "OPTIONS") {
+            client->println("HTTP/1.1 204 No Content");
+            client->println("Access-Control-Allow-Origin: *");
+            client->println("Access-Control-Allow-Methods: PUT, GET");
+            client->println("Access-Control-Allow-Headers: content-type");
+            client->println("Connection: close");
+            client->println();
+        } else if (method == "GET") {
+            doc.clear();
+            auto o = doc.to<JsonObject>();
+            to_json(o, m_state->get_detection());
+            auto content_length = measureJson(o);
+            
+            client->println("HTTP/1.1 200 Ok");
+            client->println("Access-Control-Allow-Origin: *");
+            client->println("Access-Control-Allow-Methods: PUT, GET");
+            client->println("Access-Control-Allow-Headers: content-type");
+            client->print("Content-Length: ");
+            client->println(content_length);
+            client->println("Connection: close");
+            client->println();
+
+            serializeJson(o, client);
+        } else if (method == "PUT") {
+            if (url == "/EnableConfigurationCommand") { process_command<ld2410::EnableConfigurationCommand>(client, &doc); }
+            else if (url == "/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand") { process_command<ld2410::MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>(client, &doc); }
+            else if (url == "/ReadParameterCommand") { process_command<ld2410::ReadParameterCommand>(client, &doc); }
+            else if (url == "/EnableEngineeringModeCommand") { process_command<ld2410::EnableEngineeringModeCommand>(client, &doc); }
+            else if (url == "/CloseEngineeringModeCommand") { process_command<ld2410::CloseEngineeringModeCommand>(client, &doc); }
+            else if (url == "/RangeSensitivityConfigurationCommand") { process_command<ld2410::RangeSensitivityConfigurationCommand>(client, &doc); }
+            else if (url == "/ReadFirmwareVersionCommand") { process_command<ld2410::ReadFirmwareVersionCommand>(client, &doc); }
+            else if (url == "/SetSerialPortBaudRate") { process_command<ld2410::SetSerialPortBaudRate>(client, &doc); }
+            else if (url == "/FactoryReset") { process_command<ld2410::FactoryReset>(client, &doc); }
+            else if (url == "/RestartModule") { process_command<ld2410::RestartModule>(client, &doc); }
+        }
+    }
 
     template <typename T>
-    constexpr rest_service_t command_to_route(const char* route) {
-    return { MethodPut, route, [=](AsyncWebServerRequest* req, JsonDocument* res){
+    void process_command(WiFiClient* client, JsonDocument *res) {
         auto o = res->as<JsonObject>();
         auto command = from_json<T>(o);
         o.clear();
@@ -33,39 +68,15 @@ public:
         } else {
             to_json(o, ack);
         }
-
-        return RestServiceResult(200);
-    }};
     }
 
-    void begin(AsyncWebServer* async_web_server, Ld2410State *state, TReader *reader, TWriter *writer) {
-        this->m_reader = reader;
-        this->m_writer = writer;
-        this->m_state = state;
+    void begin() {
+        m_server.begin();
+    }
 
-        m_server.begin(async_web_server, {
-            { MethodOptions, "/", [](AsyncWebServerRequest* req, JsonDocument* res){
-                res->to<JsonObject>();
-
-                return RestServiceResult(200);
-            }},
-            { MethodGet, "/state", [=](AsyncWebServerRequest* req, JsonDocument* res){
-                auto o = res->to<JsonObject>();
-                to_json(o, m_state->get_detection());
-
-                return RestServiceResult(200);
-            }},
-            command_to_route<ld2410::EnableConfigurationCommand>("/EnableConfigurationCommand"),
-            command_to_route<ld2410::EndConfigurationCommand>("/EndConfigurationCommand"),
-            command_to_route<ld2410::MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>("/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand"),
-            command_to_route<ld2410::ReadParameterCommand>("/ReadParameterCommand"),
-            command_to_route<ld2410::EnableEngineeringModeCommand>("/EnableEngineeringModeCommand"),
-            command_to_route<ld2410::CloseEngineeringModeCommand>("/CloseEngineeringModeCommand"),
-            command_to_route<ld2410::RangeSensitivityConfigurationCommand>("/RangeSensitivityConfigurationCommand"),
-            command_to_route<ld2410::ReadFirmwareVersionCommand>("/ReadFirmwareVersionCommand"),
-            command_to_route<ld2410::SetSerialPortBaudRate>("/SetSerialPortBaudRate"),
-            command_to_route<ld2410::FactoryReset>("/FactoryReset"),
-            command_to_route<ld2410::RestartModule>("/RestartModule"),
+    void loop() {
+        m_server.loop([&](WiFiClient* client, const String &method, const String &url, DynamicJsonDocument &doc) {
+            this->on_request(client, method, url, doc);
         });
     }
 };
