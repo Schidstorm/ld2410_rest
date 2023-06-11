@@ -41,16 +41,16 @@ public:
 
             serializeJson(o, client);
         } else if (method == "PUT") {
-            if (url == "/EnableConfigurationCommand") { process_command<ld2410::EnableConfigurationCommand>(client, &doc); }
-            else if (url == "/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand") { process_command<ld2410::MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>(client, &doc); }
-            else if (url == "/ReadParameterCommand") { process_command<ld2410::ReadParameterCommand>(client, &doc); }
-            else if (url == "/EnableEngineeringModeCommand") { process_command<ld2410::EnableEngineeringModeCommand>(client, &doc); }
-            else if (url == "/CloseEngineeringModeCommand") { process_command<ld2410::CloseEngineeringModeCommand>(client, &doc); }
-            else if (url == "/RangeSensitivityConfigurationCommand") { process_command<ld2410::RangeSensitivityConfigurationCommand>(client, &doc); }
-            else if (url == "/ReadFirmwareVersionCommand") { process_command<ld2410::ReadFirmwareVersionCommand>(client, &doc); }
-            else if (url == "/SetSerialPortBaudRate") { process_command<ld2410::SetSerialPortBaudRate>(client, &doc); }
-            else if (url == "/FactoryReset") { process_command<ld2410::FactoryReset>(client, &doc); }
-            else if (url == "/RestartModule") { process_command<ld2410::RestartModule>(client, &doc); }
+            if (url == "/EnableConfigurationCommand") { process_command<ld2410::EnableConfigurationCommand>(client, &doc, reader, writer); }
+            else if (url == "/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand") { process_command<ld2410::MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>(client, &doc, reader, writer); }
+            else if (url == "/ReadParameterCommand") { process_command<ld2410::ReadParameterCommand>(client, &doc, reader, writer); }
+            else if (url == "/EnableEngineeringModeCommand") { process_command<ld2410::EnableEngineeringModeCommand>(client, &doc, reader, writer); }
+            else if (url == "/CloseEngineeringModeCommand") { process_command<ld2410::CloseEngineeringModeCommand>(client, &doc, reader, writer); }
+            else if (url == "/RangeSensitivityConfigurationCommand") { process_command<ld2410::RangeSensitivityConfigurationCommand>(client, &doc, reader, writer); }
+            else if (url == "/ReadFirmwareVersionCommand") { process_command<ld2410::ReadFirmwareVersionCommand>(client, &doc, reader, writer); }
+            else if (url == "/SetSerialPortBaudRate") { process_command<ld2410::SetSerialPortBaudRate>(client, &doc, reader, writer); }
+            else if (url == "/FactoryReset") { process_command<ld2410::FactoryReset>(client, &doc, reader, writer); }
+            else if (url == "/RestartModule") { process_command<ld2410::RestartModule>(client, &doc, reader, writer); }
         }
     }
 
