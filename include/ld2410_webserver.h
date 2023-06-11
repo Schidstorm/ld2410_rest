@@ -39,7 +39,7 @@ public:
             client->println("Connection: close");
             client->println();
 
-            serializeJson(o, client);
+            serializeJson(o, *client);
         } else if (method == "PUT") {
             if (url == "/EnableConfigurationCommand") { process_command<ld2410::EnableConfigurationCommand>(client, &doc, reader, writer); }
             else if (url == "/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand") { process_command<ld2410::MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>(client, &doc, reader, writer); }
