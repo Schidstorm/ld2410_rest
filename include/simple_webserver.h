@@ -103,6 +103,7 @@ private:
         String path = "";
         bool found_space = false;
         for(size_t i = 0; i < first_line.length(); i++) {
+            if (found_space && first_line[i] == ' ') break;
             if (found_space) path += first_line[i];
             if (first_line[i] == ' ') {
                 found_space = true;
