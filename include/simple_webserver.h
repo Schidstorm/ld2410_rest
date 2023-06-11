@@ -73,12 +73,12 @@ private:
         while (client->connected() && currentTime - previousTime <= m_timeout_time) {  // loop while the client's connected
             currentTime = millis();
             if (client->available()) {             // if there's bytes to read from the client,
-                auto c = client->read();
+                char c = client->read();
 
                 if (c == end_char) {
                     break;
                 } else{
-                    currentLine += c;
+                    currentLine.concat(c);
                 }
             }
         }
