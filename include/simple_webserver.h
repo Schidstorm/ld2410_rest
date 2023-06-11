@@ -30,6 +30,8 @@ public:
             auto path = get_path(first_line);
             DynamicJsonDocument body_buffer = ArduinoJson::DynamicJsonDocument(JSON_OBJECT_SIZE(64));
             size_t content_length = 0;
+            Serial.println(method);
+            Serial.println(path);
 
             while(true) {
                 auto header = read_line(&client);
