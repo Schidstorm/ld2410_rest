@@ -33,16 +33,16 @@ public:
                 }
             }
         } else if (method == "PUT") {
-            if (url == "/EnableConfigurationCommand") { process_command<ld2410::EnableConfigurationCommand>(client, body, body_size, reader, writer); }
-            else if (url == "/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand") { process_command<ld2410::MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>(client, body, body_size, reader, writer); }
-            else if (url == "/ReadParameterCommand") { process_command<ld2410::ReadParameterCommand>(client, body, body_size, reader, writer); }
-            else if (url == "/EnableEngineeringModeCommand") { process_command<ld2410::EnableEngineeringModeCommand>(client, body, body_size, reader, writer); }
-            else if (url == "/CloseEngineeringModeCommand") { process_command<ld2410::CloseEngineeringModeCommand>(client, body, body_size, reader, writer); }
-            else if (url == "/RangeSensitivityConfigurationCommand") { process_command<ld2410::RangeSensitivityConfigurationCommand>(client, body, body_size, reader, writer); }
-            else if (url == "/ReadFirmwareVersionCommand") { process_command<ld2410::ReadFirmwareVersionCommand>(client, body, body_size, reader, writer); }
-            else if (url == "/SetSerialPortBaudRate") { process_command<ld2410::SetSerialPortBaudRate>(client, body, body_size, reader, writer); }
-            else if (url == "/FactoryReset") { process_command<ld2410::FactoryReset>(client, body, body_size, reader, writer); }
-            else if (url == "/RestartModule") { process_command<ld2410::RestartModule>(client, body, body_size, reader, writer); }
+            if (url == "/EnableConfigurationCommand") { process_command<EnableConfigurationCommand>(client, body, body_size, reader, writer); }
+            else if (url == "/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand") { process_command<MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>(client, body, body_size, reader, writer); }
+            else if (url == "/ReadParameterCommand") { process_command<ReadParameterCommand>(client, body, body_size, reader, writer); }
+            else if (url == "/EnableEngineeringModeCommand") { process_command<EnableEngineeringModeCommand>(client, body, body_size, reader, writer); }
+            else if (url == "/CloseEngineeringModeCommand") { process_command<CloseEngineeringModeCommand>(client, body, body_size, reader, writer); }
+            else if (url == "/RangeSensitivityConfigurationCommand") { process_command<RangeSensitivityConfigurationCommand>(client, body, body_size, reader, writer); }
+            else if (url == "/ReadFirmwareVersionCommand") { process_command<ReadFirmwareVersionCommand>(client, body, body_size, reader, writer); }
+            else if (url == "/SetSerialPortBaudRate") { process_command<SetSerialPortBaudRate>(client, body, body_size, reader, writer); }
+            else if (url == "/FactoryReset") { process_command<FactoryReset>(client, body, body_size, reader, writer); }
+            else if (url == "/RestartModule") { process_command<RestartModule>(client, body, body_size, reader, writer); }
         }
     }
 
@@ -62,11 +62,11 @@ public:
 
     template <typename T>
     void process_command(WiFiClient* client, const uint8_t* body, size_t body_size, TReader *reader, TWriter *writer) {
-        Command<T> command;
+        T command;
         deserialize<T>(body, body_size, command);
         auto response = ld2410::write_and_read_ack(*writer, *reader, command, 1000);
         if (response.has_value()) {
-            serialize_and_write_to(createCommand(response.value()), print_ok_data(client));
+            serialize_and_write_to(response.value(), print_ok_data(client));
         }
     }
 
