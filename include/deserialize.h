@@ -98,12 +98,28 @@ namespace ld2410_rest {
         MSGPACK_DEFINE(m_status)
     };
 
-    class SetSerialPortBaudRate: public ld2410::SetSerialPortBaudRate {
-        MSGPACK_DEFINE(m_baudRate_selection_index)
+    LD2410_PACKET SetSerialPortBaudRate {
+        LD2410_PROP(uint16_t, baudRate_selection_index)
 
     public:
+        static inline constexpr ld2410::to_bytes_union<uint32_t> definition_header{ld2410::CommandHeader};
+        static inline constexpr ld2410::to_bytes_union<uint32_t> definition_mfr{ld2410::CommandMFR};
+        static inline constexpr ld2410::to_bytes_union<uint16_t> definition_type{0x00a1};
         using ack_t = SetSerialPortBaudRateAck;
+
+        template <typename TWriter>
+        void write(TWriter &writer) const {
+            LD2410_WRITE_SHORT(baudRate_selection_index);
+        }
+
+        static const size_t size() {
+            size_t size_ = 0;
+            size_ += sizeof(SetSerialPortBaudRate::m_baudRate_selection_index);
+            return size_;
+        }
     };
+
+    
 
     class FactoryResetAck: public ld2410::FactoryResetAck {
         MSGPACK_DEFINE(m_status)
