@@ -14,7 +14,7 @@ namespace ld2410_rest {
 
 class Ld2410State {
 private:
-    std::optional<std::variant<ReportingDataFrame, EngineeringModeDataFrame>> m_detection;
+    std::optional<std::variant<ld2410::ReportingDataFrame, ld2410::EngineeringModeDataFrame>> m_detection;
     bool m_is_detected;
 
 public:

@@ -62,11 +62,11 @@ public:
 
     template <typename T>
     void process_command(WiFiClient* client, const uint8_t* body, size_t body_size, TReader *reader, TWriter *writer) {
-        T command;
+        Command<T> command;
         deserialize<T>(body, body_size, command);
         auto response = ld2410::write_and_read_ack(*writer, *reader, command, 1000);
         if (response.has_value()) {
-            serialize_and_write_to(response.value(), print_ok_data(client));
+            serialize_and_write_to(createCommand(response.value()), print_ok_data(client));
         }
     }
 
