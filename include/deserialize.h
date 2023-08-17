@@ -133,7 +133,7 @@ namespace ld2410_rest {
     }
 
     template <typename T, typename THandleData>
-    bool serialize_and_write_to(const T &result, THandleData handle_data) {
+    void serialize_and_write_to(const T &result, THandleData handle_data) {
         MsgPack::Packer packer;
         packer.serialize(result);
         handle_data(packer.data(), packer.size());
