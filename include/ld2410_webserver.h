@@ -65,7 +65,9 @@ public:
         T command;
         deserialize<T>(body, body_size, command);
         auto response = ld2410::write_and_read_ack(*writer, *reader, command, 1000);
-        serialize_and_write_to(response, print_ok_data(client));
+        if (response.has_value()) {
+            serialize_and_write_to(response.value(), print_ok_data(client));
+        }
     }
 
     void begin() {
