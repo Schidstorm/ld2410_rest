@@ -26,21 +26,12 @@ public:
             client->println("Connection: close");
             client->println();
         } else if (method == "GET") {
-            doc.clear();
-            auto o = doc.to<JsonObject>();
-            to_json(o, state->get_detection());
-            auto content_length = measureJson(o);
-            
-            client->println("HTTP/1.1 200 Ok");
-            client->println("Access-Control-Allow-Origin: *");
-            client->println("Access-Control-Allow-Methods: PUT, GET");
-            client->println("Access-Control-Allow-Headers: content-type");
-            client->print("Content-Length: ");
-            client->println(content_length);
-            client->println("Connection: close");
-            client->println();
-
-            serializeJson(o, *client);
+            auto detection = state->get_detection();
+            if (detection.has_value()) {
+                if (std::holds_alternative<ReportingDataFrame>(detection.value())) {
+                    serialize_and_write_to(std::get<ReportingDataFrame>(detection.value()), print_ok_data(client));
+                }
+            }
         } else if (method == "PUT") {
             if (url == "/EnableConfigurationCommand") { process_command<ld2410::EnableConfigurationCommand>(client, body, body_size, reader, writer); }
             else if (url == "/MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand") { process_command<ld2410::MaximumDistanceGateandUnmannedDurationParameterConfigurationCommand>(client, body, body_size, reader, writer); }
@@ -55,12 +46,26 @@ public:
         }
     }
 
+    auto print_ok_data(WiFiClient* client) {
+        return [](const uint8_t* body, size_t body_size){
+            client->println("HTTP/1.1 200 Ok");
+            client->println("Access-Control-Allow-Origin: *");
+            client->println("Access-Control-Allow-Methods: PUT, GET");
+            client->println("Access-Control-Allow-Headers: content-type");
+            client->print("Content-Length: ");
+            client->println(body_size);
+            client->println("Connection: close");
+            client->println();
+            client->write(body, body_size);
+        }
+    }
+
     template <typename T>
     void process_command(WiFiClient* client, const char* body, size_t body_size, TReader *reader, TWriter *writer) {
         T command;
         deserialize<T>(body, body_size, command);
         auto response = ld2410::write_and_read_ack(*writer, *reader, command, 1000);
-        serialize_and_write_to(response, client);
+        serialize_and_write_to(std::get<ReportingDataFrame>(detection.value()), print_ok_data(client));
     }
 
     void begin() {

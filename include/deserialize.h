@@ -130,10 +130,10 @@ namespace ld2410_rest {
         return unpacker.deserialize(result);
     }
 
-    template <typename T>
-    bool serialize_and_write_to(const T &result, Print* write_to) {
+    template <typename T, typename THandleData>
+    bool serialize_and_write_to(const T &result, THandleData handle_data) {
         MsgPack::Packer packer;
         packer.serialize(input);
-        write_to->write(packer.data(), packer.size());
+        handle_data(packer.data(), packer.size());
     }
 }
