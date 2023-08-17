@@ -117,7 +117,7 @@ namespace ld2410_rest {
         LD2410_PROP(uint16_t, baudRate_selection_index)
 
     public:
-        MSGPACK_DEFINE(baudRate_selection_index)
+        MSGPACK_DEFINE(m_baudRate_selection_index)
 
         static inline constexpr ld2410::to_bytes_union<uint32_t> definition_header{ld2410::CommandHeader};
         static inline constexpr ld2410::to_bytes_union<uint32_t> definition_mfr{ld2410::CommandMFR};
