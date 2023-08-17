@@ -30,6 +30,7 @@ namespace ld2410_rest {
 
     class EndConfigurationCommand: public ld2410::EndConfigurationCommand {
 
+        MSGPACK_DEFINE()
     public:
         using ack_t = EndConfigurationCommandAck;
 
@@ -51,6 +52,7 @@ namespace ld2410_rest {
     };
 
     class ReadParameterCommand: public ld2410::ReadParameterCommand {
+        MSGPACK_DEFINE()
     public:
         using ack_t = ReadParameterCommandAck;
     };
@@ -60,6 +62,7 @@ namespace ld2410_rest {
     };
 
     class EnableEngineeringModeCommand: public ld2410::EnableEngineeringModeCommand {
+        MSGPACK_DEFINE()
     public:
         using ack_t = EnableEngineeringModeCommandAck;
     };
@@ -69,6 +72,7 @@ namespace ld2410_rest {
     };
 
     class CloseEngineeringModeCommand: public ld2410::CloseEngineeringModeCommand {
+        MSGPACK_DEFINE()
     public:
         using ack_t = CloseEngineeringModeCommandAck;
     };
@@ -89,7 +93,7 @@ namespace ld2410_rest {
     };
 
     class ReadFirmwareVersionCommand: public ld2410::ReadFirmwareVersionCommand {
-
+        MSGPACK_DEFINE()
     public:
         using ack_t = ReadFirmwareVersionCommandAck;
     };
@@ -126,7 +130,7 @@ namespace ld2410_rest {
     };
 
     class FactoryReset: public ld2410::FactoryReset {
-
+        MSGPACK_DEFINE()
     public:
         using ack_t = FactoryResetAck;
     };
@@ -136,7 +140,7 @@ namespace ld2410_rest {
     };
 
     class RestartModule: public ld2410::RestartModule {
-
+        MSGPACK_DEFINE()
     public:
         using ack_t = RestartModuleAck;
     };
