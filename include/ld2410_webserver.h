@@ -47,7 +47,7 @@ public:
     }
 
     auto print_ok_data(WiFiClient* client) {
-        return [](const uint8_t* body, size_t body_size){
+        return [=client](const uint8_t* body, size_t body_size){
             client->println("HTTP/1.1 200 Ok");
             client->println("Access-Control-Allow-Origin: *");
             client->println("Access-Control-Allow-Methods: PUT, GET");
