@@ -57,7 +57,7 @@ public:
             client->println("Connection: close");
             client->println();
             client->write(body, body_size);
-        }
+        };
     }
 
     template <typename T>
