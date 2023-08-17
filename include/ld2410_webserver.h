@@ -17,7 +17,7 @@ public:
 
     }
 
-    void on_request(WiFiClient* client, const String &method, const String &url, const char* body, size_t body_size, TReader *reader, TWriter *writer, Ld2410State *state) {
+    void on_request(WiFiClient* client, const String &method, const String &url, const uint8_t* body, size_t body_size, TReader *reader, TWriter *writer, Ld2410State *state) {
         if (method ==  "OPTIONS") {
             client->println("HTTP/1.1 204 No Content");
             client->println("Access-Control-Allow-Origin: *");
@@ -61,7 +61,7 @@ public:
     }
 
     template <typename T>
-    void process_command(WiFiClient* client, const char* body, size_t body_size, TReader *reader, TWriter *writer) {
+    void process_command(WiFiClient* client, const uint8_t* body, size_t body_size, TReader *reader, TWriter *writer) {
         T command;
         deserialize<T>(body, body_size, command);
         auto response = ld2410::write_and_read_ack(*writer, *reader, command, 1000);
@@ -74,7 +74,7 @@ public:
 
     void loop(TReader *reader, TWriter *writer, Ld2410State *state) {
         m_server.loop([&](WiFiClient* client, const String &method, const String &url, const char* body, size_t body_size) {
-            this->on_request(client, method, url, body, body_size, reader, writer, state);
+            this->on_request(client, method, url, (const uint8_t*)body, body_size, reader, writer, state);
         });
     }
 };
