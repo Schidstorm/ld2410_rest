@@ -126,7 +126,7 @@ namespace ld2410_rest {
 
         template <typename TWriter>
         void write(TWriter &writer) const {
-            LD2410_WRITE_SHORT(baudRate_selection_index);
+            ld2410::write_any<decltype(m_baudRate_selection_index)>(writer, baudRate_selection_index())
         }
 
         static const size_t size() {
