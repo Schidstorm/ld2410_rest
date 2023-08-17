@@ -1,0 +1,25 @@
+{
+  "name": "ld2410-rest",
+  "version": "1.0.0",
+  "description": "rest server for ld2410 protocol",
+  "keywords": "ld2410, arduino, esp8266",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/Schidstorm/ld2410-lib.git"
+  },
+  "authors":
+  [
+    {
+      "name": "Dominik Schidlowski",
+      "email": "dominik@schidlowski.eu",
+      "url": "https://github.com/Schidstorm"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Schidstorm/ld2410-lib",
+  "dependencies": {
+  },
+  "frameworks": "arduino",
+  "platforms": "*"
+}

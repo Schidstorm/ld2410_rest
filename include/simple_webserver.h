@@ -28,7 +28,6 @@ public:
             auto first_line = read_line(&client);
             auto method = get_method(first_line);
             auto path = get_path(first_line);
-            DynamicJsonDocument body_buffer = ArduinoJson::DynamicJsonDocument(JSON_OBJECT_SIZE(64));
             size_t content_length = 0;
             Serial.println(method);
             Serial.println(path);
@@ -41,15 +40,14 @@ public:
                 }
             }
 
+            String body = "";
             if (content_length > 0) {
-                String body;
                 body.reserve(content_length+1);
                 body[body.length() - 1] = '\0';
                 client.readBytes(&body[0], content_length);
-                deserializeJson(body_buffer, &body[0]);
             }
 
-            handler(&client, method, path, body_buffer);
+            handler(&client, method, path, body.c_str(), content_length);
 
             // Close the connection
             client.stop();
