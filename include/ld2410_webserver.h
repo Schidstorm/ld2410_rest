@@ -54,6 +54,7 @@ public:
             client->println("Access-Control-Allow-Origin: *");
             client->println("Access-Control-Allow-Methods: PUT, GET");
             client->println("Access-Control-Allow-Headers: content-type");
+            client->println("Content-Type: application/msgpack");
             client->print("Content-Length: ");
             client->println(body_size);
             client->println("Connection: close");
