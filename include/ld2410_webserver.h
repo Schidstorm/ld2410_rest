@@ -30,6 +30,8 @@ public:
             if (detection.has_value()) {
                 if (std::holds_alternative<ReportingDataFrame>(detection.value())) {
                     serialize_and_write_to(std::get<ReportingDataFrame>(detection.value()), print_ok_data(client));
+                } else {
+                    serialize_and_write_to(std::get<EngineeringModeDataFrame>(detection.value()), print_ok_data(client));
                 }
             }
         } else if (method == "PUT") {
